@@ -9,8 +9,36 @@ app.get('/', (req, res) => {
     res.status(200).json({nome: 'Lucas', idade: 25})
 })
 
-app.get('/livro', (req, res) => {
-    res.status(200).json(['Código da Vinci', 'O senhor dos Anéis'])
+app.post('/livros', (req, res) => {
+    const livro = req.body
+    livros.push(livro)
+    res.status(200).send('Envio bem-sucedido.')
+})
+
+app.put('/livro', (req, res) => {
+    const livroPassado = req.body
+    for(let livro of livros) {
+        if(livro.nome == livroPassado.nome) {
+            livro.autor = livroPassado.autor
+            livro.ano = livroPassado.ano
+        }
+    }
+    res.status(200).send('Livro atualizado.')
+})
+
+app.delete('/livro', (req, res) => {
+    const livroPassado = req.body
+    livros = livros.filter((livro) => {
+        if(livro.nome == livroPassado.nome) {
+            return false
+        }
+        return true
+    })
+    res.status(200).send('Livro removido.')
+})
+
+app.get('/livros', (req, res) => {
+    res.status(200).json([livros])
 })
 
 app.listen(3301, () => {
